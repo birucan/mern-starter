@@ -24,7 +24,7 @@ export default class SearchBar extends Component {
         
 
         // create a string for an HTTP body message
-        const userID = encodeURIComponent('58aa00dbdd736f1804afc430');
+        const userID = encodeURIComponent(Auth.getUser());
         const note = encodeURIComponent(this.state.term);
         const noteData = `userID=${userID}&note=${note}`;
 

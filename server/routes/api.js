@@ -11,12 +11,10 @@ router.get('/dashboard', (req, res) => {
     });
 });
 
-router.get('/notes', (req, res) => {
-    //var userID = req.body.userID;
-
-    Note.find(function (err, notes) {
+router.get('/notes/:id', (req, res) => {
+    var userID = req.params.id;
+    Note.find({ userID: userID }, function (err, notes) {
         if (err) return console.error(err);
-        //console.log(notes);
         res.status(200).json(notes);
     });
 

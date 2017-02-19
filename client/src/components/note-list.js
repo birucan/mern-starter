@@ -27,8 +27,9 @@ export default class NoteList extends Component {
     }
 
     componentWillMount() {
+        var userID = Auth.getUser();
         const xhr = new XMLHttpRequest();
-        xhr.open('get', '/api/notes');
+        xhr.open('get', '/api/notes/' + userID);
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         // Set the authorization HTTP setRequestHeader
         xhr.setRequestHeader('Authorization', `bearer ${Auth.getToken()}`);
@@ -45,21 +46,7 @@ export default class NoteList extends Component {
     }
 
     getNotes() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('get', '/api/notes');
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        // Set the authorization HTTP setRequestHeader
-        xhr.setRequestHeader('Authorization', `bearer ${Auth.getToken()}`);
-        xhr.responseType = 'json';
-        xhr.addEventListener('load', () => {
-            if (xhr.status === 200) {
-                console.log(xhr.response);
-                this.setState({
-                    notes: xhr.response
-                });
-            }
-        });
-        xhr.send();
+        
     }
 
     renderNotes() {

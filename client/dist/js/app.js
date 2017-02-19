@@ -4867,8 +4867,9 @@ var Auth = function () {
      *
      * @param {string} token
      */
-    value: function authenticateUser(token) {
+    value: function authenticateUser(token, user) {
       localStorage.setItem('token', token);
+      localStorage.setItem('user', user);
     }
 
     /**
@@ -4892,6 +4893,7 @@ var Auth = function () {
     key: 'deauthenticateUser',
     value: function deauthenticateUser() {
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
     }
 
     /**
@@ -4904,6 +4906,11 @@ var Auth = function () {
     key: 'getToken',
     value: function getToken() {
       return localStorage.getItem('token');
+    }
+  }, {
+    key: 'getUser',
+    value: function getUser() {
+      return localStorage.getItem('user');
     }
   }]);
 
@@ -16111,7 +16118,7 @@ var SearchBar = function (_Component) {
             console.log("Submit: " + this.state.term);
 
             // create a string for an HTTP body message
-            var userID = encodeURIComponent('58aa00dbdd736f1804afc430');
+            var userID = encodeURIComponent(_Auth2.default.getUser());
             var note = encodeURIComponent(this.state.term);
             var noteData = 'userID=' + userID + '&note=' + note;
 
@@ -16360,7 +16367,8 @@ var LoginPage = function (_React$Component) {
           });
 
           // save the token
-          _Auth2.default.authenticateUser(xhr.response.token);
+          console.log(xhr.response);
+          _Auth2.default.authenticateUser(xhr.response.token, xhr.response.user.userID);
 
           // change the current URL to /
           _this2.context.router.replace('/');
@@ -43505,8 +43513,9 @@ var NoteList = function (_Component) {
         value: function componentWillMount() {
             var _this2 = this;
 
+            var userID = _Auth2.default.getUser();
             var xhr = new XMLHttpRequest();
-            xhr.open('get', '/api/notes');
+            xhr.open('get', '/api/notes/' + userID);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             // Set the authorization HTTP setRequestHeader
             xhr.setRequestHeader('Authorization', 'bearer ' + _Auth2.default.getToken());
@@ -43523,25 +43532,7 @@ var NoteList = function (_Component) {
         }
     }, {
         key: 'getNotes',
-        value: function getNotes() {
-            var _this3 = this;
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('get', '/api/notes');
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            // Set the authorization HTTP setRequestHeader
-            xhr.setRequestHeader('Authorization', 'bearer ' + _Auth2.default.getToken());
-            xhr.responseType = 'json';
-            xhr.addEventListener('load', function () {
-                if (xhr.status === 200) {
-                    console.log(xhr.response);
-                    _this3.setState({
-                        notes: xhr.response
-                    });
-                }
-            });
-            xhr.send();
-        }
+        value: function getNotes() {}
     }, {
         key: 'renderNotes',
         value: function renderNotes() {
