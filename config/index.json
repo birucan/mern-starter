@@ -1,4 +1,4 @@
 {
-    "dbUri": "mongodb://server-account:VM$ervice@@ds157559.mlab.com:57559/heroku_csz818jd",
+    "dbUri": "mongodb://server-account:VM$ervice@ds157559.mlab.com:57559/heroku_csz818jd",
     "jwtSecret": "bumrush to inifinity696969"
 }

@@ -6,7 +6,10 @@ const port = process.env.PORT || 8080
 //const path = require('path');
 
 // Connect to the database and load models
+// ORIGINAL
 require('./server/models').connect(config.dbUri);
+// NEW
+//require('./server/models').connect(process.env.MONGODB_URI);
 
 const app = express();
 // Tell the app to look for static files in these directories
