@@ -1,4 +1,4 @@
 {
-    "dbUri": "mongodb://localhost/react_app",
+    "dbUri": "mongodb://server-account:VM$ervice@ds153699.mlab.com:53699/mern-boiler",
     "jwtSecret": "bumrush to inifinity696969"
 }
