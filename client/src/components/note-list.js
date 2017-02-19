@@ -2,8 +2,19 @@ import React, { Component } from 'react';
 
 import { Card, CardTitle, CardText, CardActions, CardHeader } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 import Auth from '../modules/Auth';
+
+const spinnerStyle = {
+  container: {
+    position: 'relative',
+  },
+  refresh: {
+    display: 'inline-block',
+    position: 'relative',
+  },
+};
 
 export default class NoteList extends Component {
     constructor(props) {
@@ -53,7 +64,17 @@ export default class NoteList extends Component {
 
     renderNotes() {
         if (this.state.notes.length == 0) {
-            return <div>Loading notes...</div>;
+            return (
+                <div style={spinnerStyle.container}>
+                    <RefreshIndicator
+                        size={40}
+                        left={10}
+                        top={0}
+                        status="loading"
+                        style={spinnerStyle.refresh}
+                        />
+                </div>
+            );
         }
         
         if (this.state.notes) {
