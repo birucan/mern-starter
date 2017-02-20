@@ -4,7 +4,7 @@ import { Card, CardTitle, CardText, CardActions, CardHeader } from 'material-ui/
 import FlatButton from 'material-ui/FlatButton';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 
-import Auth from '../modules/Auth';
+
 
 const spinnerStyle = {
   container: {
@@ -23,34 +23,10 @@ export default class NoteList extends Component {
         this.state = { notes: '' };
 
         this.renderNotes = this.renderNotes.bind(this);
-        this.getNotes = this.getNotes.bind(this);
-    }
-
-    componentWillMount() {
-        var userID = Auth.getUser();
-        const xhr = new XMLHttpRequest();
-        xhr.open('get', '/api/notes/' + userID);
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        // Set the authorization HTTP setRequestHeader
-        xhr.setRequestHeader('Authorization', `bearer ${Auth.getToken()}`);
-        xhr.responseType = 'json';
-        xhr.addEventListener('load', () => {
-            if (xhr.status === 200) {
-                console.log(xhr.response);
-                this.setState({
-                    notes: xhr.response
-                });
-            }
-        });
-        xhr.send();
-    }
-
-    getNotes() {
-        
     }
 
     renderNotes() {
-        if (this.state.notes.length == 0) {
+        if (this.props.notes.length == 0) {
             return (
                 <div style={spinnerStyle.container}>
                     <RefreshIndicator
@@ -64,8 +40,8 @@ export default class NoteList extends Component {
             );
         }
         
-        if (this.state.notes) {
-            return this.state.notes.map((note) => {
+        if (this.props.notes) {
+            return this.props.notes.map((note) => {
                 return (
                     <Card className="container" key={note._id}>
                         <CardHeader

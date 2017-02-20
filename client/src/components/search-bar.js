@@ -52,7 +52,7 @@ export default class SearchBar extends Component {
         });
         xhr.send(noteData);
         
-        
+        this.props.onNoteSubmit();
         this.setState({ term: '' });
     }
 

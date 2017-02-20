@@ -15754,6 +15754,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
@@ -15763,6 +15765,10 @@ var _Card = __webpack_require__(70);
 var _TextField = __webpack_require__(72);
 
 var _TextField2 = _interopRequireDefault(_TextField);
+
+var _Auth = __webpack_require__(63);
+
+var _Auth2 = _interopRequireDefault(_Auth);
 
 var _searchBar = __webpack_require__(207);
 
@@ -15774,34 +15780,89 @@ var _noteList2 = _interopRequireDefault(_noteList);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Dashboard = function Dashboard(_ref) {
-  var secretData = _ref.secretData;
-  return _react2.default.createElement(
-    'div',
-    null,
-    _react2.default.createElement(
-      _Card.Card,
-      { className: 'container' },
-      _react2.default.createElement(_Card.CardTitle, {
-        title: 'Dashboard',
-        subtitle: 'You should get access to this page only after authentication.'
-      }),
-      secretData && _react2.default.createElement(
-        _Card.CardText,
-        { style: { fontSize: '16px', color: 'green' } },
-        secretData
-      ),
-      _react2.default.createElement(_searchBar2.default, null)
-    ),
-    _react2.default.createElement(_noteList2.default, null)
-  );
-};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Dashboard = function (_Component) {
+  _inherits(Dashboard, _Component);
+
+  function Dashboard(props) {
+    _classCallCheck(this, Dashboard);
+
+    var _this = _possibleConstructorReturn(this, (Dashboard.__proto__ || Object.getPrototypeOf(Dashboard)).call(this, props));
+
+    _this.state = {
+      notes: ''
+    };
+
+    _this.getNotes = _this.getNotes.bind(_this);
+    return _this;
+  }
+
+  _createClass(Dashboard, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.getNotes();
+    }
+  }, {
+    key: 'getNotes',
+    value: function getNotes() {
+      var _this2 = this;
+
+      var userID = _Auth2.default.getUser();
+      var xhr = new XMLHttpRequest();
+      xhr.open('get', '/api/notes/' + userID);
+      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      // Set the authorization HTTP setRequestHeader
+      xhr.setRequestHeader('Authorization', 'bearer ' + _Auth2.default.getToken());
+      xhr.responseType = 'json';
+      xhr.addEventListener('load', function () {
+        if (xhr.status === 200) {
+          console.log(xhr.response);
+          _this2.setState({
+            notes: xhr.response
+          });
+        }
+      });
+      xhr.send();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          _Card.Card,
+          { className: 'container' },
+          _react2.default.createElement(_Card.CardTitle, {
+            title: 'Dashboard',
+            subtitle: 'You should get access to this page only after authentication.'
+          }),
+          this.props.secretData && _react2.default.createElement(
+            _Card.CardText,
+            { style: { fontSize: '16px', color: 'green' } },
+            this.props.secretData
+          ),
+          _react2.default.createElement(_searchBar2.default, { onNoteSubmit: this.getNotes })
+        ),
+        _react2.default.createElement(_noteList2.default, { notes: this.state.notes })
+      );
+    }
+  }]);
+
+  return Dashboard;
+}(_react.Component);
+
+exports.default = Dashboard;
+
 
 Dashboard.propTypes = {
   secretData: _react.PropTypes.string.isRequired
 };
-
-exports.default = Dashboard;
 
 /***/ }),
 /* 204 */
@@ -16146,6 +16207,7 @@ var SearchBar = function (_Component) {
             });
             xhr.send(noteData);
 
+            this.props.onNoteSubmit();
             this.setState({ term: '' });
         }
     }, {
@@ -43471,10 +43533,6 @@ var _RefreshIndicator = __webpack_require__(485);
 
 var _RefreshIndicator2 = _interopRequireDefault(_RefreshIndicator);
 
-var _Auth = __webpack_require__(63);
-
-var _Auth2 = _interopRequireDefault(_Auth);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -43504,39 +43562,13 @@ var NoteList = function (_Component) {
         _this.state = { notes: '' };
 
         _this.renderNotes = _this.renderNotes.bind(_this);
-        _this.getNotes = _this.getNotes.bind(_this);
         return _this;
     }
 
     _createClass(NoteList, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            var _this2 = this;
-
-            var userID = _Auth2.default.getUser();
-            var xhr = new XMLHttpRequest();
-            xhr.open('get', '/api/notes/' + userID);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            // Set the authorization HTTP setRequestHeader
-            xhr.setRequestHeader('Authorization', 'bearer ' + _Auth2.default.getToken());
-            xhr.responseType = 'json';
-            xhr.addEventListener('load', function () {
-                if (xhr.status === 200) {
-                    console.log(xhr.response);
-                    _this2.setState({
-                        notes: xhr.response
-                    });
-                }
-            });
-            xhr.send();
-        }
-    }, {
-        key: 'getNotes',
-        value: function getNotes() {}
-    }, {
         key: 'renderNotes',
         value: function renderNotes() {
-            if (this.state.notes.length == 0) {
+            if (this.props.notes.length == 0) {
                 return _react2.default.createElement(
                     'div',
                     { style: spinnerStyle.container },
@@ -43550,8 +43582,8 @@ var NoteList = function (_Component) {
                 );
             }
 
-            if (this.state.notes) {
-                return this.state.notes.map(function (note) {
+            if (this.props.notes) {
+                return this.props.notes.map(function (note) {
                     return _react2.default.createElement(
                         _Card.Card,
                         { className: 'container', key: note._id },
