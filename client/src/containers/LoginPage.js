@@ -43,7 +43,7 @@ class LoginPage extends React.Component {
     event.preventDefault();
 
     // create a string for an HTTP body message
-    const email = encodeURIComponent(this.state.user.email);
+    const email = encodeURIComponent(this.state.user.email.toLowerCase());
     const password = encodeURIComponent(this.state.user.password);
     const formData = `email=${email}&password=${password}`;
 

@@ -16410,7 +16410,7 @@ var LoginPage = function (_React$Component) {
       event.preventDefault();
 
       // create a string for an HTTP body message
-      var email = encodeURIComponent(this.state.user.email);
+      var email = encodeURIComponent(this.state.user.email.toLowerCase());
       var password = encodeURIComponent(this.state.user.password);
       var formData = 'email=' + email + '&password=' + password;
 
@@ -16565,7 +16565,7 @@ var SignUpPage = function (_React$Component) {
 
       // create a string for an HTTP body message
       var name = encodeURIComponent(this.state.user.name);
-      var email = encodeURIComponent(this.state.user.email);
+      var email = encodeURIComponent(this.state.user.email.toLowerCase());
       var password = encodeURIComponent(this.state.user.password);
       var formData = 'name=' + name + '&email=' + email + '&password=' + password;
 

@@ -35,7 +35,7 @@ class SignUpPage extends React.Component {
 
     // create a string for an HTTP body message
     const name = encodeURIComponent(this.state.user.name);
-    const email = encodeURIComponent(this.state.user.email);
+    const email = encodeURIComponent(this.state.user.email.toLowerCase());
     const password = encodeURIComponent(this.state.user.password);
     const formData = `name=${name}&email=${email}&password=${password}`;
 
