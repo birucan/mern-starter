@@ -14,6 +14,9 @@ const styles = {
   margin: 5,
   title: {
     cursor: 'pointer'
+  }, 
+  appbar: {
+    marginBottom: 20
   }
 };
 
@@ -45,6 +48,7 @@ export default class Base extends Component {
     return (
       <div>
         <AppBar
+          style={styles.appbar}
           title={<span style={styles.title}>React Template</span>}
           onTitleTouchTap={handleTouchTap}
           iconElementLeft={<IconButton><NavigationMenu onTouchTap={this.handleToggle} /></IconButton>}
@@ -70,6 +74,7 @@ export default class Base extends Component {
           <MenuItem onTouchTap={this.handleClose}>Menu Item</MenuItem>
           <MenuItem onTouchTap={this.handleClose}>Menu Item 2</MenuItem>
         </Drawer>
+      <a href="/auth/facebook">Login with Facebook</a>  
       { /* child component will be rendered here */ }
       {this.props.children}
 
