@@ -16520,6 +16520,11 @@ var Base = function (_Component) {
               _reactRouter.Link,
               { to: '/login' },
               _react2.default.createElement(_RaisedButton2.default, { label: 'Login', style: styles })
+            ),
+            _react2.default.createElement(
+              'a',
+              { href: '/auth/facebook' },
+              'Login with Facebook'
             )
           )
         }),
@@ -16541,11 +16546,6 @@ var Base = function (_Component) {
             { onTouchTap: this.handleClose },
             'Menu Item 2'
           )
-        ),
-        _react2.default.createElement(
-          'a',
-          { href: '/auth/facebook' },
-          'Login with Facebook'
         ),
         this.props.children
       );

@@ -61,6 +61,7 @@ export default class Base extends Component {
             <div className="top-bar-right">
               <Link to="/signup"><RaisedButton label="Sign Up" primary={true} style={styles} /></Link>
               <Link to="/login"><RaisedButton label="Login"  style={styles} /></Link>
+              <a href="/auth/facebook">Login with Facebook</a>  
             </div>
           )
           }
@@ -74,7 +75,7 @@ export default class Base extends Component {
           <MenuItem onTouchTap={this.handleClose}>Menu Item</MenuItem>
           <MenuItem onTouchTap={this.handleClose}>Menu Item 2</MenuItem>
         </Drawer>
-      <a href="/auth/facebook">Login with Facebook</a>  
+      
       { /* child component will be rendered here */ }
       {this.props.children}
 
