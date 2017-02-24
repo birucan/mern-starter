@@ -3,9 +3,10 @@
 const express = require('express');
 const validator = require('validator');
 const passport = require('passport');
+const path = require('path');
 
 const router = new express.Router();
-
+var User = require('../models/user');
 
 
 /**
@@ -146,13 +147,18 @@ router.post('/login', (req, res, next) => {
       });
     }
 
+    // Log user into session
+    req.login(userData, function(err) {
+          if (err) { return next(err); }
 
-    return res.json({
-      success: true,
-      message: 'You have successfully logged in!',
-      token,
-      user: userData
-    });
+          console.log(req.user);
+          return res.json({
+            success: true,
+            message: 'You have successfully logged in!',
+            token,
+            user: userData
+          });
+        });
   })(req, res, next);
 });
 
@@ -169,22 +175,38 @@ router.get('/facebook', passport.authenticate('facebook'));
 // access was granted, the user will be logged in.  Otherwise,
 // authentication has failed.
 router.get('/facebook/callback',
-  passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/'}), function(req, res) {
+  passport.authenticate('facebook', { successRedirect: '/auth/success', failureRedirect: '/'}), function(req, res) {
       var user = req.user;
-      
+      var token = token;
+      // Need to accept three parameters here: err, token, user
+      // Token is signed in passport-facebook.js and then passed here, where it's returned in the JSON response.... shit maybe not. Might have to store it with the user data
       
       //res.json({ user });
       console.log(user);
-      res.cookie('userid', user._id, { maxAge: 2592000000 });
-
+      console.log("Authenticated?");
+      console.log(req.isAuthenticated());
       // redirect client to URL with details as parameters
       //res.redirect('/success/auth?token=' + user.jwtToken + '&id=' + user._id);
+      //res.redirect('/');
+      //res.redirect('http://localhost:8080/auth-success.html' + user.jwtToken + '&id=' + user._id);
   });
 
+router.get('/logout', (req, res) => {
+    req.logout();
+    console.log(req.isAuthenticated());
+    res.status(200).json({ message: "Successfully logged out" });
+});
 
-// failed attempt
-router.get('/sendfbauth', (req, res) => {
-    
+router.get('/user', (req, res) => {
+        console.log('authRouter.get /user');
+        var user = req.user;
+        console.log(user);
+        res.status(200).json(user);
+        
+});
+
+router.get('/success', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../static/auth-success.html'));
 });
 
 module.exports = router;

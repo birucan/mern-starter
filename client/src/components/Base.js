@@ -28,10 +28,7 @@ function handleTouchTap() {
 }
 
 function getUserInfo() {
-    axios.get("/api/user")
-        .then((response) => {
-            console.log(response);
-        })
+    
 };
 
 export default class Base extends Component {
@@ -39,11 +36,37 @@ export default class Base extends Component {
     super(props);
 
     this.state = {
-      settingsOpen: false
+      settingsOpen: false,
+      authenticated: false
     };
     
     this.handleToggle = this.handleToggle.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.getUserInfo = this.getUserInfo.bind(this);
+    this.logout = this.logout.bind(this);
+  }
+
+  componentWillMount() {
+
+  }
+
+  getUserInfo() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('get', '/auth/user');
+    xhr.responseType = 'json';
+    xhr.addEventListener('load', () => {
+      if (xhr.status === 200) {
+        console.log(xhr.response);
+      } 
+    });
+    xhr.send();
+  }
+
+  logout() {
+      axios.get('/auth/logout')
+        .then((response) => {
+          console.log(response.data);
+        });
   }
 
   handleToggle() {
@@ -85,7 +108,8 @@ export default class Base extends Component {
           <MenuItem onTouchTap={this.handleClose}>Menu Item</MenuItem>
           <MenuItem onTouchTap={this.handleClose}>Menu Item 2</MenuItem>
         </Drawer>
-      
+        <div onClick={this.getUserInfo}>GET USER INFO</div>
+        <div onClick={this.logout}>Logout</div>
       { /* child component will be rendered here */ }
       {this.props.children}
 

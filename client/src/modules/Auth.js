@@ -26,6 +26,12 @@ class Auth {
   static deauthenticateUser() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    // destroy session on server
+    const axios = require('axios');
+    axios.get('/auth/logout')
+        .then((response) => {
+          console.log(response.data);
+    });
   }
 
   /**

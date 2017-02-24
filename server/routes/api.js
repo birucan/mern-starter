@@ -11,16 +11,6 @@ router.get('/dashboard', (req, res) => {
     });
 });
 
-router.get('/user', (req, res) => {
-    if (req.user === undefined) {
-        res.json({});
-    } else {
-        res.json({
-            user: req.user
-        });
-    }
-});
-
 router.get('/notes/:id', (req, res) => {
     var userID = req.params.id;
     Note.find({ userID: userID }, function (err, notes) {

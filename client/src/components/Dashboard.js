@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import axios from 'axios';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import Auth from '../modules/Auth';
@@ -15,6 +16,7 @@ export default class Dashboard extends Component {
     };
 
     this.getNotes = this.getNotes.bind(this);
+    this.getUserInfo = this.getUserInfo.bind(this);
   }
 
   componentWillMount() {
@@ -38,6 +40,13 @@ export default class Dashboard extends Component {
         }
     });
     xhr.send();
+  }
+
+  getUserInfo() {
+    axios.get("/api/user")
+        .then((response) => {
+            console.log(response);
+        })
   }
 
   render() {
