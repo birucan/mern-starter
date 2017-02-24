@@ -6,27 +6,32 @@ const config = require('../../config');
 module.exports = new PassportFacebookStrategy({
     clientID: config.FB_ID,
     clientSecret: config.FB_Secret,
-    callbackURL: 'https://mern-boiler.herokuapp.com/auth/facebook/callback',
+    callbackURL: 'http://localhost:8080/auth/facebook/callback',
     profileFields: ['id', 'email', 'gender', 'profileUrl', 'displayName']
 }, (accessToken, refreshToken, profile, done) => {
-    console.log(accessToken);
-    console.log(refreshToken);
-    console.log(profile);
-    const userData = {
-        email: profile.emails,
-        password: "",
-        name: profile.displayName,
-        provider: "Facebook",
-        providerID: profile.id
-    };
-
-    const newUser = new User(userData);
-    console.log(userData);
-    /*User.findOrCreate(..., function(err, user) {
-        if (err) { return done(err); }
-
-        done(null, user);
-    });
-    */
-    return callback(null, profile);
+    process.nextTick(function() {
+        User.findOne({ 'providerID': profile.id }, function(err, user) {
+            if (err) {
+                return done(err);
+            } else if (user) {
+                return done(null, user);
+            } else {
+                const userData = {
+                    email: profile.emails,
+                    password: "",
+                    name: profile.displayName,
+                    provider: "Facebook",
+                    providerID: profile.id,
+                    jwtToken: accessToken
+                };
+                
+                var newUser = new User(userData);
+                newUser.save(function(err) {
+                    if (err) throw err;
+                    return done(null, newUser);
+                })
+            }
+        })
+    })
+    //return done(null, profile);
 });

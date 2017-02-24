@@ -1,6 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { Link, IndexLink } from 'react-router';
+import axios from 'axios';
 import Auth from '../modules/Auth';
+import FacebookLogin from './facebook-login';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import AppBar from 'material-ui/AppBar';
@@ -13,7 +15,8 @@ import MenuItem from 'material-ui/MenuItem';
 const styles = {
   margin: 5,
   title: {
-    cursor: 'pointer'
+    cursor: 'pointer',
+    color: '#fff'
   }, 
   appbar: {
     marginBottom: 20
@@ -23,6 +26,13 @@ const styles = {
 function handleTouchTap() {
 
 }
+
+function getUserInfo() {
+    axios.get("/api/user")
+        .then((response) => {
+            console.log(response);
+        })
+};
 
 export default class Base extends Component {
   constructor(props) {
@@ -49,7 +59,7 @@ export default class Base extends Component {
       <div>
         <AppBar
           style={styles.appbar}
-          title={<span style={styles.title}>React Template</span>}
+          title={<Link to="/"><span style={styles.title}>React Template</span></Link>}
           onTitleTouchTap={handleTouchTap}
           iconElementLeft={<IconButton><NavigationMenu onTouchTap={this.handleToggle} /></IconButton>}
           iconElementRight=
@@ -61,7 +71,7 @@ export default class Base extends Component {
             <div className="top-bar-right">
               <Link to="/signup"><RaisedButton label="Sign Up" primary={true} style={styles} /></Link>
               <Link to="/login"><RaisedButton label="Login"  style={styles} /></Link>
-              <a href="/auth/facebook">Login with Facebook</a>  
+              <FacebookLogin />  
             </div>
           )
           }

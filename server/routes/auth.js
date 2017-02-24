@@ -6,6 +6,8 @@ const passport = require('passport');
 
 const router = new express.Router();
 
+
+
 /**
  * Validate the sign up form
  *
@@ -167,12 +169,22 @@ router.get('/facebook', passport.authenticate('facebook'));
 // access was granted, the user will be logged in.  Otherwise,
 // authentication has failed.
 router.get('/facebook/callback',
-  passport.authenticate('facebook', { successRedirect: '/',
-                                      failureRedirect: '/login' }));
+  passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/'}), function(req, res) {
+      var user = req.user;
+      
+      
+      //res.json({ user });
+      console.log(user);
+      res.cookie('userid', user._id, { maxAge: 2592000000 });
+
+      // redirect client to URL with details as parameters
+      //res.redirect('/success/auth?token=' + user.jwtToken + '&id=' + user._id);
+  });
 
 
-
-
-
+// failed attempt
+router.get('/sendfbauth', (req, res) => {
+    
+});
 
 module.exports = router;
