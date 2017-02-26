@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 module.exports = new PassportFacebookStrategy({
     clientID: config.FB_ID,
     clientSecret: config.FB_Secret,
-    callbackURL: 'http://localhost:8080/auth/facebook/callback',
+    callbackURL: 'https://mern-boiler.herokuapp.com/auth/facebook/callback',
     profileFields: ['id', 'email', 'gender', 'profileUrl', 'displayName']
 }, (accessToken, refreshToken, profile, done) => {
     process.nextTick(function() {
