@@ -27,10 +27,6 @@ function handleTouchTap() {
 
 }
 
-function getUserInfo() {
-    
-};
-
 export default class Base extends Component {
   constructor(props) {
     super(props);
