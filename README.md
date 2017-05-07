@@ -18,3 +18,12 @@ To run locally, "npm install" the directory
 Use "npm start" to start your local server
 
 In another bash window, optionally use "npm run bundle" to have WebPack monitor your client folder for changes
+
+FRAMEWORK
+-Universal (Server-side rendering)
+-Local & Facebook login (via Passport)
+-Redux w/ Thunk
+-MongoDb & Mongoose
+-Express server
+-Webpack
+-Material UI
