@@ -17,9 +17,12 @@ const styles = {
   title: {
     cursor: 'pointer',
     color: '#fff'
-  }, 
+
+  },
   appbar: {
-    marginBottom: 20
+    marginBottom: 20,
+    color: 'Orange',
+    background: 'Orange'
   }
 };
 
@@ -35,7 +38,7 @@ export default class Base extends Component {
       settingsOpen: false,
       authenticated: false
     };
-    
+
     this.handleToggle = this.handleToggle.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.getUserInfo = this.getUserInfo.bind(this);
@@ -53,7 +56,7 @@ export default class Base extends Component {
     xhr.addEventListener('load', () => {
       if (xhr.status === 200) {
         console.log(xhr.response);
-      } 
+      }
     });
     xhr.send();
   }
@@ -78,7 +81,7 @@ export default class Base extends Component {
       <div>
         <AppBar
           style={styles.appbar}
-          title={<Link to="/"><span style={styles.title}>React Template</span></Link>}
+          title={<Link to="/"><span style={styles.title}>BitTech Autobank</span></Link>}
           onTitleTouchTap={handleTouchTap}
           iconElementLeft={<IconButton><NavigationMenu onTouchTap={this.handleToggle} /></IconButton>}
           iconElementRight=
@@ -88,9 +91,9 @@ export default class Base extends Component {
             </div>
           ) : (
             <div className="top-bar-right">
-              <Link to="/signup"><RaisedButton label="Sign Up" primary={true} style={styles} /></Link>
+              <Link to="/signup"><RaisedButton label="Sign Up" primary={false} style={styles} /></Link>
               <Link to="/login"><RaisedButton label="Login"  style={styles} /></Link>
-              <FacebookLogin />  
+              <FacebookLogin />
             </div>
           )
           }
@@ -104,8 +107,9 @@ export default class Base extends Component {
           <MenuItem onTouchTap={this.handleClose}>Menu Item</MenuItem>
           <MenuItem onTouchTap={this.handleClose}>Menu Item 2</MenuItem>
         </Drawer>
-        <div onClick={this.getUserInfo}>GET USER INFO</div>
-        <div onClick={this.logout}>Logout</div>
+        <div onClick={this.getUserInfo}>.</div>
+
+        <div onClick={this.logout}> </div>
       { /* child component will be rendered here */ }
       {this.props.children}
 
@@ -118,4 +122,3 @@ export default class Base extends Component {
 Base.propTypes = {
   children: PropTypes.object.isRequired
 };
-

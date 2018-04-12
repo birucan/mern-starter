@@ -29,18 +29,18 @@ function sendGetRequest() {
 }
 
 function testFBapi() {
-    
+
     window.fbAsyncInit = function() {
     FB.init({
       appId      : '215024398970477',
-      cookie     : true,  // enable cookies to allow the server to access 
+      cookie     : true,  // enable cookies to allow the server to access
                           // the session
       xfbml      : true,  // parse social plugins on this page
       version    : 'v2.8' // use graph api version 2.8
     });
-    
-    
-    
+
+
+
     FB.api('/me', function(response) {
         console.log(JSON.stringify(response));
     });
@@ -50,7 +50,7 @@ function testFBapi() {
 const FacebookLogin = () => {
     return (
         <div>
-            <a href="/auth/facebook">Login with Facebook</a>
+            <a href="/auth/facebook"></a>
         </div>
     );
 }

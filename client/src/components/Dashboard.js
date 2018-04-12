@@ -54,8 +54,8 @@ export default class Dashboard extends Component {
       <div>
       <Card className="container">
         <CardTitle
-          title="Dashboard"
-          subtitle="You should get access to this page only after authentication."
+          title="test"
+          subtitle="Hola"
         />
 
         {this.props.secretData && <CardText style={{ fontSize: '16px', color: 'green' }}>{this.props.secretData}</CardText>}
